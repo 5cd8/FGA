@@ -11,9 +11,9 @@ import javax.inject.Inject
 /**
  * Chooses the 3 face cards a turn taps. A type pattern that the hand can satisfy wins
  * outright; otherwise [FaceCardPriority] + [ApplyBraveChains] decide, unchanged from
- * before type patterns existed. See CONTEXT.md ("型パターン / Type Pattern") and
- * docs/adr/0001-type-pattern-overrides-other-priority-layers.md for why a match skips
- * both CardPriority-driven servant grouping and brave chain rearrangement entirely.
+ * before type patterns existed. A match skips both CardPriority-driven servant grouping
+ * and brave chain rearrangement entirely: the user asked for an exact per-position type
+ * order, and letting either system reorder it afterward could silently break that order.
  */
 @ScriptScope
 class CardPicker @Inject constructor(
