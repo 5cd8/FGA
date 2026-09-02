@@ -2,14 +2,12 @@ package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.ScriptLog
-import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.SpamConfigPerTeamSlot
 import io.github.fate_grand_automata.scripts.models.battle.BattleState
-import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
@@ -21,9 +19,7 @@ class Card @Inject constructor(
     private val spamConfig: SpamConfigPerTeamSlot,
     private val caster: Caster,
     private val parser: CardParser,
-    private val priority: FaceCardPriority,
-    private val braveChains: ApplyBraveChains,
-    private val battleConfig: IBattleConfig
+    private val cardPicker: CardPicker
 ) : IFgoAutomataApi by api {
 
     fun readCommandCards(): List<ParsedCard> = useSameSnapIn {
@@ -46,24 +42,8 @@ class Card @Inject constructor(
     private fun pickCards(
         cards: List<ParsedCard>,
         npUsage: NPUsage
-    ): List<CommandCard.Face> {
-        val cardsOrderedByPriority = priority.sort(cards, state.stage)
-
-        fun <T> List<T>.inCurrentWave(default: T) =
-            if (isNotEmpty())
-                this[state.stage.coerceIn(indices)]
-            else default
-
-        val braveChainsPerWave = battleConfig.braveChains
-        val rearrangeCardsPerWave = battleConfig.rearrangeCards
-
-        return braveChains.pick(
-            cards = cardsOrderedByPriority,
-            npUsage = npUsage,
-            braveChains = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
-            rearrange = rearrangeCardsPerWave.inCurrentWave(false)
-        ).map { it.card }
-    }
+    ): List<CommandCard.Face> =
+        cardPicker.pick(cards, npUsage, state.stage)
 
     fun clickCommandCards(
         cards: List<ParsedCard>,
