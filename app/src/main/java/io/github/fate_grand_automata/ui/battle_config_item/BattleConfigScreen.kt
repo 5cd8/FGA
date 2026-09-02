@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -37,8 +38,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
+import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.CardScore
+import io.github.fate_grand_automata.scripts.models.CardTypePatternPriorityPerWave
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.HeadingButton
 import io.github.fate_grand_automata.ui.VerticalDivider
@@ -231,6 +234,21 @@ private fun BattleConfigContent(
                                     onClick = { navigate(BattleConfigDestination.CardPriority) }
                                 )
                             }
+
+                            HorizontalDivider()
+
+                            val cardTypePatternPriorityPref = remember(config) {
+                                config.cardTypePatternPriority.map(
+                                    defaultValue = "",
+                                    convert = { it.toString() },
+                                    reverse = { CardTypePatternPriorityPerWave.of(it) }
+                                )
+                            }
+
+                            cardTypePatternPriorityPref.EditTextPreference(
+                                title = stringResource(R.string.p_battle_config_card_type_pattern),
+                                validate = { candidate -> runCatching { CardTypePatternPriorityPerWave.of(candidate) }.isSuccess }
+                            )
                         }
                     }
                 }
