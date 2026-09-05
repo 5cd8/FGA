@@ -55,10 +55,12 @@ class CardTypePatternSelector @Inject constructor() {
             val candidates = remainingCards.filter { it.type == requiredType }
             if (candidates.isEmpty()) return null
 
-            // minByOrNull cannot return null here since candidates is non-empty (checked
-            // above); it also keeps the first element on ties, so candidates' hand order
-            // becomes the tiebreaker once CardPriority itself is tied.
-            val chosenCard = candidates.minByOrNull { priorityRank(it, priorityOrder) }!!
+            // Ties on CardPriority rank prefer a card matching
+            // IBattleConfig.preferredCommandCode; any remaining tie keeps hand order, since
+            // sortedWith is stable.
+            val chosenCard = candidates
+                .sortedWith(compareBy({ priorityRank(it, priorityOrder) }, { !it.hasCommandCode }))
+                .first()
 
             picked += chosenCard
             remainingCards -= chosenCard

@@ -20,6 +20,7 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
 import io.github.fate_grand_automata.scripts.entrypoints.AutoServantLevel
+import io.github.fate_grand_automata.scripts.entrypoints.CommandCodeImageMaker
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
 import io.github.fate_grand_automata.scripts.enums.GameServers
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
@@ -29,6 +30,7 @@ import io.github.fate_grand_automata.ui.launcher.ScriptLauncher
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncherResponse
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIState
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIStateHolder
+import io.github.fate_grand_automata.ui.command_code_namer.showCommandCodeImageNamer
 import io.github.fate_grand_automata.ui.support_img_namer.showSupportImageNamer
 import io.github.fate_grand_automata.util.FakedComposeView
 import io.github.fate_grand_automata.util.ImageLoader
@@ -172,6 +174,8 @@ class ScriptManager @Inject constructor(
                 }
             }
 
+            is CommandCodeImageMaker.ExitException -> showCommandCodeImageNamer(context, storageProvider)
+
             is AutoLottery.ExitException -> {
                 val msg = when (e.reason) {
                     AutoLottery.ExitReason.PresentBoxFull -> context.getString(R.string.present_box_full)
@@ -288,6 +292,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.Lottery -> entryPoint.lottery()
             ScriptModeEnum.PresentBox -> entryPoint.giftBox()
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
+            ScriptModeEnum.CommandCodeImageMaker -> entryPoint.commandCodeImageMaker()
             ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
             ScriptModeEnum.ServantLevel -> entryPoint.servantLevel()
         }

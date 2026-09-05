@@ -42,6 +42,7 @@ import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.CardScore
 import io.github.fate_grand_automata.scripts.models.CardTypePatternPriorityPerWave
+import io.github.fate_grand_automata.scripts.models.PreferredCommandCodePerWave
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.HeadingButton
 import io.github.fate_grand_automata.ui.VerticalDivider
@@ -248,6 +249,22 @@ private fun BattleConfigContent(
                             cardTypePatternPriorityPref.EditTextPreference(
                                 title = stringResource(R.string.p_battle_config_card_type_pattern),
                                 validate = { candidate -> runCatching { CardTypePatternPriorityPerWave.of(candidate) }.isSuccess }
+                            )
+
+                            val preferredCommandCodePref = remember(config) {
+                                config.preferredCommandCode.map(
+                                    defaultValue = "",
+                                    convert = { it.toString() },
+                                    reverse = { PreferredCommandCodePerWave.of(it) }
+                                )
+                            }
+
+                            // A Command Code image name has no character-level syntax to
+                            // fail (unlike CardTypePattern's "BAB"), so there's no validate
+                            // predicate here; a name with no matching file only surfaces as
+                            // a KnownException at battle time (same as Servant/CE).
+                            preferredCommandCodePref.EditTextPreference(
+                                title = stringResource(R.string.p_battle_config_preferred_command_code)
                             )
                         }
                     }

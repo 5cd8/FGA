@@ -12,6 +12,7 @@ import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.CardTypePatternPriorityPerWave
+import io.github.fate_grand_automata.scripts.models.PreferredCommandCodePerWave
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.ServantSpamConfig
 import kotlinx.serialization.SerializationException
@@ -70,6 +71,18 @@ class BattleConfigCore(
                 value.toString()
         },
         default = CardTypePatternPriorityPerWave.of("")
+    )
+
+    val preferredCommandCode = maker.serialized(
+        "preferred_command_code",
+        serializer = object : Serializer<PreferredCommandCodePerWave> {
+            override fun deserialize(serialized: String) =
+                PreferredCommandCodePerWave.of(serialized)
+
+            override fun serialize(value: PreferredCommandCodePerWave) =
+                value.toString()
+        },
+        default = PreferredCommandCodePerWave.of("")
     )
 
     val rearrangeCards = maker.serialized(

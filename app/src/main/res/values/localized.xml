@@ -81,6 +81,12 @@ Skills"</string>
     <string name="support_img_namer_done">"Done"</string>
     <string name="support_img_namer_blank_file_name">"One of the names is still empty. Either uncheck the unnamed Servant/CE or specify a name."</string>
     <string name="support_img_namer_file_rename_failed">"Failed to rename to: '%s'"</string>
+    <string name="command_code_namer_title">"Drag the box over a Command Code badge"</string>
+    <string name="command_code_namer_name_hint">"Name"</string>
+    <string name="command_code_namer_save">"Save"</string>
+    <string name="command_code_namer_saved">"Saved '%s'. Drag the box again to save another."</string>
+    <string name="command_code_namer_blank_name">"Enter a name before saving."</string>
+    <string name="command_code_namer_capture_missing">"Couldn't load the captured screenshot."</string>
     <string name="p_refill">"Refill"</string>
     <string name="p_battle_config">"Battle Configs"</string>
     <string name="p_battle_config_summary">"Manage configs for Battle script"</string>
@@ -96,6 +102,7 @@ Skills"</string>
     <string name="p_battle_config_server">"Server"</string>
     <string name="p_battle_config_card_priority">"Card Priority"</string>
     <string name="p_battle_config_card_type_pattern">"Card Type Pattern"</string>
+    <string name="p_battle_config_preferred_command_code">"Preferred Command Code"</string>
     <string name="p_battle_config_use_servant_priority">"Use Servant Priority"</string>
     <string name="p_battle_config_support">"Support"</string>
     <string name="p_battle_config_support_selection_mode">"Selection Mode"</string>
@@ -222,6 +229,7 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_script_mode_lottery">"Lottery"</string>
     <string name="p_script_mode_fp">"Friend Gacha"</string>
     <string name="p_script_mode_support_image_maker">"Support Image Maker"</string>
+    <string name="p_script_mode_command_code_image_maker">"Command Code Image Maker"</string>
     <string name="p_script_mode_gift_box">"Gift Box"</string>
     <string name="p_max_gold_ember_set_size">"Max Gold ember set size"</string>
     <string name="p_not_set">"Not Set"</string>

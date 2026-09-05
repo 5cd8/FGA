@@ -20,6 +20,7 @@ class SupportImageExtractor(
             SupportImageKind.Servant -> "servant"
             SupportImageKind.CE -> "ce"
             SupportImageKind.Friend -> "friend"
+            SupportImageKind.CommandCode -> "command_code"
         }
 
     private fun extract(kind: SupportImageKind) {

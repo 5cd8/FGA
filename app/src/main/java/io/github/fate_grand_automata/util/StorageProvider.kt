@@ -109,11 +109,15 @@ class StorageProvider @Inject constructor(
     private val supportFriendFolder
         get() = supportImageFolder.getOrCreateDir("friend")
 
+    private val supportCommandCodeFolder
+        get() = supportImageFolder.getOrCreateDir("command_code")
+
     private val SupportImageKind.imageFolder
         get() = when (this) {
             SupportImageKind.Servant -> supportServantFolder
             SupportImageKind.CE -> supportCEFolder
             SupportImageKind.Friend -> supportFriendFolder
+            SupportImageKind.CommandCode -> supportCommandCodeFolder
         }
 
     override fun writeSupportImage(kind: SupportImageKind, name: String): OutputStream {
@@ -138,7 +142,13 @@ class StorageProvider @Inject constructor(
     }
 
     override fun readSupportImage(kind: SupportImageKind, name: String): List<InputStream> {
+        // Preferred Servant/CE/Friend are picked from list(kind)'s own output (which already
+        // carries ".png"/folder names as-is), so an exact findFile(name) always lands. Preferred
+        // Command Code is free text instead (wiki/scripts/Support-Image-Maker.md tells users to
+        // type it without ".png", matching how they name the file when saving it), so fall back
+        // to the ".png"-qualified name when the bare one isn't a file or folder here.
         val file = kind.imageFolder.findFile(name)
+            ?: kind.imageFolder.findFile("$name.png")
             ?: throw KnownException(
                 KnownException.Reason.CouldNotOpenSupportFileForReading(kind, name)
             )

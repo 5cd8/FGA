@@ -177,4 +177,30 @@ class CardTypePatternSelectorTest {
         // listed (rank 0); weakBuster's score is absent and must lose the tiebreak, not win it.
         assertThat(result?.take(1)?.map { it.card }).isEqualTo(listOf(CommandCard.Face.B))
     }
+
+    @Test
+    fun breaksATieWithinARequiredTypeTowardTheCardWithThePreferredCommandCode() {
+        val plainBusterWithoutCode = ParsedCard(CommandCard.Face.A, TeamSlot.A, FieldSlot.A, CardTypeEnum.Buster)
+        val plainBusterWithCode = ParsedCard(
+            card = CommandCard.Face.B,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Buster,
+            hasCommandCode = true
+        )
+
+        // 2 NPs reduce "BBB" to a single required Buster (see
+        // requiresFewerCardsAsMoreNpsAreUsedThisTurn above). Both cards tie under the
+        // default CardPriority (CardScore(Buster, Normal) for both); dealt order alone
+        // would pick Face.A, but the preferred-Command-Code card wins the tie instead.
+        val result = selector.select(
+            cards = listOf(plainBusterWithoutCode, plainBusterWithCode),
+            patterns = listOf(CardTypePattern.of("BBB")),
+            cardPriority = CardPriorityPerWave.default,
+            stage = 0,
+            npUsage = NPUsage(setOf(CommandCard.NP.A, CommandCard.NP.B), 0)
+        )
+
+        assertThat(result?.take(1)?.map { it.card }).isEqualTo(listOf(CommandCard.Face.B))
+    }
 }

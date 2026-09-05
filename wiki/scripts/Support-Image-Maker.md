@@ -14,6 +14,7 @@ Under the `FGA/support/` folder, put:
 - Servant images in `servant` folder
 - CE images in `ce` folder
 - Friend name images in `friend` folder
+- Command Code images in `command_code` folder (see below)
 
 If you want to use any servant or CE other than the default ones provided with the app, you'll have to
 create their images using the `Support Image Maker` mode.
@@ -46,7 +47,32 @@ FGA/
 -- -- friend/
 -- -- -- mathew.png
 -- -- -- recon.png
+-- -- command_code/
+-- -- -- np20.png
 ```
+
+## Using a Command Code image to prefer one of several same-type cards
+
+If you want the script to prefer a specific card among same-type/affinity ties (e.g. pick
+the one of 2 Arts cards that has a particular Command Code attached), you need a reference
+image of that Command Code's badge under `FGA/support/command_code/`.
+
+While FGA is running on the Attack screen with the Command Code visible on a face card,
+press Play, then pick **Command Code Image Maker** from the launcher dialog (next to
+"Support Image Maker"). This captures the current screen live, at the same resolution FGA's
+own matching uses, and opens it with a draggable box:
+
+1. Drag the box over the badge.
+2. Type a name and press **Save** (next to Done in the dialog's own button row) — you can
+   save several differently named badges from the same capture before closing.
+3. Save it as `FGA/support/command_code/<name>.png` (no need for `.png` when entering the
+   name in settings, same rule as Servant/CE names) — the tool does this for you.
+4. In the Battle Config screen, enter `<name>` under "Preferred Command Code" for the wave
+   you want it to apply to (one name per line, one line per wave — same syntax as "Card
+   Type Pattern").
+
+Every Command Code has different artwork, so this only ever matches the one code whose
+image you provided — it can't detect "any code is equipped" in general.
 
 ## How to use Support Image Maker?
 
