@@ -41,6 +41,7 @@ class ScriptLauncherResponseHandler @Inject constructor(
             }
 
             ScriptLauncherResponse.SupportImageMaker -> ScriptModeEnum.SupportImageMaker
+            ScriptLauncherResponse.CommandCodeImageMaker -> ScriptModeEnum.CommandCodeImageMaker
             is ScriptLauncherResponse.CEBomb -> {
                 prefs.ceBombTargetRarity = resp.targetRarity
 

@@ -97,6 +97,10 @@ class ScriptMessages @Inject constructor(
                 val supportText = if (item.isSupport) "Support " else ""
                 Timber.d("${item.cards} belong to ${supportText}${item.servant}")
             }
+
+            is ScriptLog.CommandCodesDetected -> {
+                Timber.d("Command Code '${item.commandCodeName}' matched on card(s): ${item.cards}")
+            }
         }
 
     override fun notify(action: ScriptNotify) =

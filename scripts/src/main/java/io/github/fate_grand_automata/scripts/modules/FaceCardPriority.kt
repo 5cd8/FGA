@@ -23,6 +23,10 @@ class FaceCardPriority @Inject constructor(
         return cardPriority
             .atWave(stage)
             .mapNotNull { groupedByScore[it] }
+            // A tie within one CardScore group (same type + affinity) breaks toward a card
+            // matching IBattleConfig.preferredCommandCode; sortedByDescending is stable, so
+            // cards without a match keep their original relative (hand) order.
+            .map { group -> group.sortedByDescending { it.hasCommandCode } }
             .flatten()
     }
 

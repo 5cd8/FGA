@@ -32,7 +32,7 @@ fun ScriptLauncher(
             val modifier = Modifier.weight(1f)
 
             val responseBuilder = when (scriptMode) {
-                ScriptModeEnum.Battle, ScriptModeEnum.SupportImageMaker ->
+                ScriptModeEnum.Battle, ScriptModeEnum.SupportImageMaker, ScriptModeEnum.CommandCodeImageMaker ->
                     battleLauncher(prefs, modifier)
 
                 ScriptModeEnum.FP -> fpLauncher(prefs, modifier)
@@ -52,6 +52,17 @@ fun ScriptLauncher(
                     if (scriptMode == ScriptModeEnum.SupportImageMaker) {
                         TextButton(onClick = { onResponse(ScriptLauncherResponse.SupportImageMaker) }) {
                             Text(stringResource(R.string.p_script_mode_support_image_maker))
+                        }
+                    }
+
+                    // Command Codes only ever show up on the Attack screen, which AutoDetect
+                    // already classifies as Battle mode -- unlike Support Image Maker, there's
+                    // no separate screen to detect this mode from, so the button is offered
+                    // alongside the ordinary Battle launcher instead of gated behind a
+                    // dedicated scriptMode value.
+                    if (scriptMode == ScriptModeEnum.Battle) {
+                        TextButton(onClick = { onResponse(ScriptLauncherResponse.CommandCodeImageMaker) }) {
+                            Text(stringResource(R.string.p_script_mode_command_code_image_maker))
                         }
                     }
                 }

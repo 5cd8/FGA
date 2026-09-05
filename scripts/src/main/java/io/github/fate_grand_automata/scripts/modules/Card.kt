@@ -22,8 +22,15 @@ class Card @Inject constructor(
     private val cardPicker: CardPicker
 ) : IFgoAutomataApi by api {
 
-    fun readCommandCards(): List<ParsedCard> = useSameSnapIn {
-        parser.parse()
+    fun readCommandCards(): List<ParsedCard> {
+        val cards = useSameSnapIn {
+            parser.parse(state.stage)
+        }
+
+        // Its own screenshot pass (in color), taken only after the parse() snapshot above has
+        // been released -- see the comment on CardParser.commandCodeMatchScore for why it
+        // can't share that (grayscale) cached one.
+        return parser.applyCommandCodePreference(cards, state.stage)
     }
 
     private val spamNps: Set<CommandCard.NP>

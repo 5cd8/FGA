@@ -76,4 +76,23 @@ class FaceCardPriorityTest {
 
         assertThat(sorted).containsExactly(CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D)
     }
+
+    @Test
+    fun breaksATieWithinACardScoreGroupTowardTheCardWithThePreferredCommandCode() {
+        val plainArtsWithoutCode = ParsedCard(CommandCard.Face.A, TeamSlot.A, FieldSlot.A, CardTypeEnum.Arts)
+        val plainArtsWithCode = ParsedCard(
+            card = CommandCard.Face.B,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Arts,
+            hasCommandCode = true
+        )
+        val priority = FaceCardPriority(CardPriorityPerWave.default, null)
+
+        // Both cards score as CardScore(Arts, Normal); dealt order alone would put Face.A
+        // first, but the one carrying the preferred Command Code wins the tie instead.
+        val sorted = priority.sort(listOf(plainArtsWithoutCode, plainArtsWithCode), 0).map { it.card }
+
+        assertThat(sorted).containsExactly(CommandCard.Face.B, CommandCard.Face.A)
+    }
 }

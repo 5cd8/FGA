@@ -13,6 +13,7 @@ interface ScriptEntryPoint {
     fun giftBox(): AutoGiftBox
     fun lottery(): AutoLottery
     fun supportImageMaker(): SupportImageMaker
+    fun commandCodeImageMaker(): CommandCodeImageMaker
     fun ceBomb(): AutoCEBomb
 
     fun servantLevel(): AutoServantLevel
